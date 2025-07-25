@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: '/',
+  base: mode === 'production' ? '/website/' : '/',
   plugins: [
     react(),
     mode === 'development' &&
