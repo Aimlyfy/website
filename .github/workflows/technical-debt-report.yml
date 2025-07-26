@@ -85,11 +85,11 @@ jobs:
         echo "$RECOMMENDATIONS" | perl -pe 's/\n/<br>/g' > temp_recommendations.txt
         
         # Replace content placeholders
-        perl -i -pe 's|OVERALL_ANALYSIS_CONTENT|'"$(cat temp_overall.txt)"'|g' report.html
-        perl -i -pe 's|COMPONENT_ANALYSIS_CONTENT|'"$(cat temp_component.txt)"'|g' report.html
-        perl -i -pe 's|CODE_QUALITY_CONTENT|'"$(cat temp_quality.txt)"'|g' report.html
-        perl -i -pe 's|SECURITY_PERFORMANCE_CONTENT|'"$(cat temp_security.txt)"'|g' report.html
-        perl -i -pe 's|RECOMMENDATIONS_CONTENT|'"$(cat temp_recommendations.txt)"'|g' report.html
+        perl -i -pe 's|OVERALL_ANALYSIS_CONTENT|'"$(cat temp_overall.txt)"'|g' docs/index.html
+        perl -i -pe 's|COMPONENT_ANALYSIS_CONTENT|'"$(cat temp_component.txt)"'|g' docs/index.html
+        perl -i -pe 's|CODE_QUALITY_CONTENT|'"$(cat temp_quality.txt)"'|g' docs/index.html
+        perl -i -pe 's|SECURITY_PERFORMANCE_CONTENT|'"$(cat temp_security.txt)"'|g' docs/index.html
+        perl -i -pe 's|RECOMMENDATIONS_CONTENT|'"$(cat temp_recommendations.txt)"'|g' docs/index.html
         
         # Cleanup temporary files
         rm temp_*.txt
@@ -100,7 +100,7 @@ jobs:
     - name: Upload to GitHub Pages
       uses: actions/upload-pages-artifact@v3
       with:
-        path: report.html
+        path: docs/index.html
     
     - name: Deploy to GitHub Pages
       id: deployment
