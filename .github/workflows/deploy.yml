@@ -42,25 +42,25 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Generate technical debt report
-        uses: ai-action/ollama-action@v1
-        id: model
-        with:
-          model: llama3.2
-          prompt: "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
+      # - name: Generate technical debt report
+      #   uses: ai-action/ollama-action@v1
+      #   id: model
+      #   with:
+      #     model: llama3.2
+      #     prompt: "You are a Technical Debt auditor. Analysis all of the codes of this folder and Generate a HTML report .html file for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
 
-      - name: Print response
-        run: echo "$response"
-        env:
-          response: ${{ steps.model.outputs.response }}
+      # - name: Print response
+      #   run: echo "$response"
+      #   env:
+      #     response: ${{ steps.model.outputs.response }}
 
-      - name: Save response to file
-        run: echo "${{ steps.model.outputs.response }}" > docs/report.html
+      # - name: Save response to file
+      #   run: echo "${{ steps.model.outputs.response }}" > docs/report.html
         
-      - name: Copy report to dist
-        run: |
-          ls docs
-          cp docs/report.html dist/report.html || echo "No report generated"
+      # - name: Copy report to dist
+      #   run: |
+      #     ls docs
+      #     cp docs/report.html dist/report.html || echo "No report generated"
       # - name: Install GitHub CLI
       #   run: |
       #     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
