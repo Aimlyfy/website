@@ -44,9 +44,18 @@ jobs:
 
       - name: Generate technical debt report
         uses: ai-action/ollama-action@v1
+        id: model
         with:
           model: llama3.2
           prompt: "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
+
+      - name: Print response
+        run: echo "$response"
+        env:
+          response: ${{ steps.model.outputs.response }}
+
+      - name: Save response to file
+        run: echo "${{ steps.model.outputs.response }}" > docs/report.html
         
       - name: Copy report to dist
         run: |
