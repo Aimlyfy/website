@@ -41,32 +41,42 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
-      - name: Install GitHub CLI
-        run: |
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install gh -y
-      
-      - name: Authenticate GitHub CLI
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-      
-      - name: Install GitHub Copilot CLI extension
-        run: |
-          gh extension install github/gh-copilot
 
-      - name: Generate Technical Debt HTML Report
+      - name: Generate technical debt report
+        uses: ai-action/ollama-action@v1
+        with:
+          model: llama3.2
+          prompt: "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
+        
+      - name: Copy report to dist
         run: |
-          mkdir -p docs
-          # Generate comprehensive technical debt analysis
-          gh copilot explain "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
-          gh copilot explain \
-            -t shell "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML." > docs/report.html
-          echo "Technical debt report generated at docs/report.html"
-          #copy to dist folder
-          cp docs/report.html dist/report.html
+          ls docs
+          cp docs/report.html dist/report.html || echo "No report generated"
+      # - name: Install GitHub CLI
+      #   run: |
+      #     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+      #     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+      #     sudo apt update
+      #     sudo apt install gh -y
+      
+      # - name: Authenticate GitHub CLI
+      #   run: |
+      #     echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      
+      # - name: Install GitHub Copilot CLI extension
+      #   run: |
+      #     gh extension install github/gh-copilot
+
+      # - name: Generate Technical Debt HTML Report
+      #   run: |
+      #     mkdir -p docs
+      #     # Generate comprehensive technical debt analysis
+      #     gh copilot explain "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
+      #     gh copilot explain \
+      #       -t shell "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML." > docs/report.html
+      #     echo "Technical debt report generated at docs/report.html"
+      #     #copy to dist folder
+      #     cp docs/report.html dist/report.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
