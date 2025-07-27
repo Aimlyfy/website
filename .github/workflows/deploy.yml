@@ -40,8 +40,32 @@ jobs:
         run: npm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@
+        
+      - name: Install GitHub CLI
+        run: |
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh -y
+      
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      
+      - name: Install GitHub Copilot CLI extension
+        run: |
+          gh extension install github/gh-copilot
 
+      - name: Generate Technical Debt HTML Report
+        run: |
+          mkdir -p docs
+          gh copilot suggest \
+            -t shell "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Pipeline Complexity, Readability, Comments & Inline Docs, External Documentation, Performance & Scalability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML." > docs/report.html
+          echo "Technical debt report generated at docs/report.html"
+          #copy to dist folder
+          cp docs/report.html dist/report.html
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
