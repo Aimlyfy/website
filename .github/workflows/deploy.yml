@@ -60,8 +60,10 @@ jobs:
       - name: Generate Technical Debt HTML Report
         run: |
           mkdir -p docs
-          gh copilot suggest \
-            -t shell "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Pipeline Complexity, Readability, Comments & Inline Docs, External Documentation, Performance & Scalability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML." > docs/report.html
+          # Generate comprehensive technical debt analysis
+          gh copilot explain "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML (report.html) in the docs folder."
+          gh copilot explain \
+            -t shell "You are a Technical Debt auditor. Generate a self‐contained HTML report for this repo with A–E grades for: Overall Code Quality, Architecture, Security, Performance, Maintainability. Include key issues, recommendations, overall grade and a footer with 'Generated: YYYY-MM-DD'. Output only HTML." > docs/report.html
           echo "Technical debt report generated at docs/report.html"
           #copy to dist folder
           cp docs/report.html dist/report.html
