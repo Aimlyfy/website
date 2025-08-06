@@ -61,6 +61,7 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="https://app.aimlyfy.com" target="_blank" rel="noopener noreferrer">
             <Button 
               size="lg" 
               className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 group px-8 py-4 text-lg"
@@ -68,6 +69,7 @@ const Hero = () => {
               Get Started Today
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
+            </a>
             <a href="https://app.aimlyfy.com" target="_blank" rel="noopener noreferrer">
             <Button 
               variant="outline" 
