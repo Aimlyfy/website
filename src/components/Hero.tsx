@@ -68,6 +68,7 @@ const Hero = () => {
               Get Started Today
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
+            <a href="https://app.aimlyfy.com" target="_blank" rel="noopener noreferrer">
             <Button 
               variant="outline" 
               size="lg"
@@ -75,6 +76,7 @@ const Hero = () => {
             >
               View Our Work
             </Button>
+            </a>
           </div>
 
           {/* Stats */}
